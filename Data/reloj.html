@@ -42,7 +42,6 @@
       <div id="seconds">00</div>
     </div>
     <div id="contenedor_horario1" style="display: inline-grid; margin-right: 20px; margin-bottom: 50px;">
-      <form action="/HORARIO1" method="post">
         <label for="horaEncendido1">Hora de encendido</label><br>
         <input type="number" id="horaEncendido1" name="horaEncendido1" min="0" max="23" value="18">&nbsp:
         <input type="number" id="minutoEncendido1" name="minutoEncendido1" min="0" max="60" value="30">
@@ -50,11 +49,10 @@
         <input type="number" id="horaApagado1" name="horaApagado1" min="0" max="23" value="7">&nbsp:
         <input type="number" id="minutoApagado1" name="minutoApagado1" min="0" max="59" value="30">
         <input type="number" id="flagHorario1" name="flagHorario1" min="0" max="10" value="1" style="display: none;"><br>
-        <br><button id="establecerHorario1" type="submit" value="Submit" onclick="horario1()">Establecer horario ventilador</button>
-      </form>
+        <br><button id="establecerHorario1" value="Submit" onclick="horario1()">Establecer horario ventilador</button>
     </div>
     <div id="contenedor_horario2" style="display: inline-grid; margin-left: 20px; margin-bottom: 60px;">
-      <form action="/HORARIO2" method="post">
+      
         <label for="horaEncendido2">Hora de encendido</label><br>
         <input type="number" id="horaEncendido2" name="horaEncendido2" min="0" max="23" value="18">&nbsp:
         <input type="number" id="minutoEncendido2" name="minutoEncendido2" min="0" max="60" value="30">
@@ -62,8 +60,8 @@
         <input type="number" id="horaApagado2" name="horaApagado2" min="0" max="23" value="7">&nbsp:
         <input type="number" id="minutoApagado2" name="minutoApagado2" min="0" max="59" value="30">
         <input type="number" id="flagHorario2" name="flagHorario2" min="0" max="10" value="1" style="display: none;"><br>
-        <br><button id="establecerHorario2" type="submit" value="Submit" onclick="horario2()">Establecer horario foco</button>
-      </form>
+        <br><button id="establecerHorario2" value="Submit" onclick="horario2()">Establecer horario foco</button>
+
     </div>
     
     <!--Tabla de información de la conexión-->

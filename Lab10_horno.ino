@@ -23,6 +23,10 @@ int setPoint = 22;
 int Sup;
 int Inf;
 
+//Horario
+String hEncendido, mEncendido, hApagado, mApagado, aux;
+String hEncendido2, mEncendido2, hApagado2, mApagado2, aux2;
+bool flagHorario = false;
 
 String pwmValue;
 
@@ -114,6 +118,40 @@ void setup() {
   //Segunda pestaña
   server.on("/SensorLM35", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send_P(200, "text/plain", String(T).c_str());
+  });
+   //Horario
+  server.on("/HORARIO1", HTTP_GET, [](AsyncWebServerRequest *request){
+    hEncendido = request->arg("horaEncendido1");
+    mEncendido = request->arg("minutoEncendido1");
+    hApagado = request->arg("horaApagado1");
+    mApagado = request->arg("minutoApagado1");
+    aux = request->arg("auxHorario");
+    Serial.print("Hora encendido ->");
+    Serial.print(hEncendido);
+    Serial.print(":");
+    Serial.print(mEncendido);
+    Serial.print("\t");
+    Serial.print("Hora apagado ->");
+    Serial.print(hApagado);
+    Serial.print(":");
+    Serial.println(mApagado);
+  });
+   //Horario
+  server.on("/HORARIO2", HTTP_GET, [](AsyncWebServerRequest *request){
+    hEncendido2 = request->arg("horaEncendido2");
+    mEncendido2 = request->arg("minutoEncendido2");
+    hApagado2 = request->arg("horaApagado2");
+    mApagado2 = request->arg("minutoApagado2");
+    aux2 = request->arg("auxHorario2");
+    Serial.print("Hora encendido ->");
+    Serial.print(hEncendido);
+    Serial.print(":");
+    Serial.print(mEncendido);
+    Serial.print("\t");
+    Serial.print("Hora apagado ->");
+    Serial.print(hApagado);
+    Serial.print(":");
+    Serial.println(mApagado);
   });
 
   
