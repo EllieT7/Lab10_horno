@@ -12,7 +12,7 @@
 OneWire oneWire(SENSOR_PIN);  // asignando el pin de lectura
 DallasTemperature DS18B20(&oneWire);
 
-float T; // temperatura en Celsius
+float T = 0; // temperatura en Celsius
 
 //reles
 const int Foco = 18;
@@ -63,7 +63,7 @@ void setup() {
 
   server.on("/index.html", HTTP_GET, [](AsyncWebServerRequest * request) {
     page = 0;
-    request->send(SPIFFS, "/index.html", String(), false);
+    request->send(SPIFFS, "/index.html", String(), false, datos);
   });
   
   server.on("/serial.html", HTTP_GET, [](AsyncWebServerRequest * request) {
@@ -103,13 +103,21 @@ void setup() {
     digitalWrite(Vent, HIGH);
   });
 
-  //Segunda pestaña
+  //Tercera pestaña
   server.on("/SLIDER", HTTP_POST, [](AsyncWebServerRequest *request){
     pwmValue = request->arg("pwmValue");
     Serial.print("Set_point:\t");
     Serial.println(pwmValue);
     setPoint = pwmValue.toInt();
   });
+
+  //Segunda pestaña
+  server.on("/SensorLM35", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send_P(200, "text/plain", String(T).c_str());
+  });
+
+  
+
   
   server.begin();
 }

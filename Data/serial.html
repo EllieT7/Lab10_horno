@@ -43,7 +43,7 @@
             Slider:<br>
             <input type="range" id="pwmInput" name="pwmValue" min="0" max="1023" value="500" onchange="updateTextInput(this.value, 'pwmInput', 'textInput')" >
             <input type="number" id="textInput" onchange="updateTextInput(this.value, 'pwmInput', 'textInput')" value="500" style="width:50px">
-            <br><button type="submit" value="Submit">Enviar</button>
+            <br><button type="submit" value="Submit" onclick="setSetPoint()">Enviar</button>
           </form>
         </center>
       </div>
@@ -188,10 +188,22 @@
           xhttp.open("GET", "/SensorLM35", true);
           xhttp.send();
       }, 1000 );
+
       
       function updateTextInput(val, pwmInput, textInput) {
         document.getElementById(pwmInput).value = val; 
         document.getElementById(textInput).value = val; 
+      }
+
+      function setSetPoint(){
+        var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  console.log(this.responseText);
+              }
+          };
+          xhttp.open("POST", "/SLIDER", true);
+          xhttp.send();
       }
     </script>
 </body>
