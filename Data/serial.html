@@ -38,7 +38,7 @@
     <div style="display:grid; gap: 40px;">
       <div>
         <center>
-          <h2>Control del Set_Point,</h2>
+          <h2>Control del Set_Point</h2>
           <form action="/SLIDER" method="post">
             Slider:<br>
             <input type="range" id="pwmInput" name="pwmValue" min="0" max="1023" value="500" onchange="updateTextInput(this.value, 'pwmInput', 'textInput')" >
@@ -48,18 +48,22 @@
         </center>
       </div>
       <!--Gráfica-->
-      <center><div style="min-width: 310px; max-width: 800px;">
-        <div id="sensor-LM35" class="container"></div>
-      </div></center>
+      <center>
+        <div style="min-width: 310px; max-width: 800px;">
+          <div id="sensor-LM35" class="container"></div>
+        </div>
+      </center>
+      <!-- Imagenes -->
       <div style="display: grid; grid-template-columns: 45% 45%; gap: 10%; margin: 0px 10vw; margin-bottom: 50px;">
         <div style="display: flex; justify-content: center; align-items: center;">
-            <img id="imagen-foco" src="https://raw.githubusercontent.com/MicaelaGordillo/images_IoT/main/intensidad_foco/intensidad5.png" alt="foco" width="60%">
+            <img id="img-foco" src="https://raw.githubusercontent.com/MicaelaGordillo/images_IoT/main/intensidad_foco/intensidad5.png" alt="foco" width="60%">
         </div>
         <div style="display: flex; justify-content: center; align-items: center;">
-            <img id="imagen-ventilador" src="https://raw.githubusercontent.com/MicaelaGordillo/images_IoT/main/ventilador/ventilador.jpg" alt="ventilador" width="60%">
+            <img id="img-ventilador" src="https://raw.githubusercontent.com/MicaelaGordillo/images_IoT/main/ventilador/ventilador.jpg" alt="ventilador" width="60%">
         </div>
       </div>
     </div>
+    
     
     <!--Tabla de información de la conexión-->
     <div>
@@ -68,7 +72,7 @@
         <div style='width: 90vw; transition: 1s;' class='ampliacion'>
         <table class="styled-table">
           <thead>
-          <tr><th style=' padding: 20px;'>IP Local</th><th style=' padding: 20px; '>Host Name</th><th style=' padding: 20px; '>Status</th><th style=' padding: 20px; '>SSID</th><th style=' padding: 20px; '>PSK</th><th style=' padding: 20px; '>BSSID</th><th style=' padding: 20px; '>RSSI</th></tr>
+          <tr><th style=' padding: 20px;'>ip Local</th><th style=' padding: 20px; '>Host Name</th><th style=' padding: 20px; '>Status</th><th style=' padding: 20px; '>SSID</th><th style=' padding: 20px; '>PSK</th><th style=' padding: 20px; '>BSSID</th><th style=' padding: 20px; '>RSSI</th></tr>
           </thead>
           <tr>
           <td style='padding: 20px;text-align: center;'class='changecolor'>
@@ -178,6 +182,7 @@
           xhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   var x = (new Date()).getTime(), y = parseFloat(this.responseText);
+                  console.log(this.responseText);
                   if(sensorLM35.series[0].data.length > 40) {
                       sensorLM35.series[0].addPoint([x, y], true, true, true);
                   } else {
@@ -205,6 +210,32 @@
           xhttp.open("POST", "/SLIDER", true);
           xhttp.send();
       }
+      /*Función para cambiar la imagen en base a la conexión WiFi*/
+      function actualizarPotencia(){
+            var valor = parseInt(document.getElementById("valorPotencia").innerText);
+            if (valor >= (-40)) {
+                document.getElementById("imgPotencia").src = "https://raw.githubusercontent.com/MicaelaGordillo/images_IoT/main/intensidad_wifi/wifi4.png";
+            } else if (valor <(-40) && valor >= (-50)) {
+                document.getElementById("imgPotencia").src = "https://raw.githubusercontent.com/MicaelaGordillo/images_IoT/main/intensidad_wifi/wifi3.png";
+            } else if (valor < (-50) && valor >= (-60)){
+                document.getElementById("imgPotencia").src = "https://raw.githubusercontent.com/MicaelaGordillo/images_IoT/main/intensidad_wifi/wifi2.png";
+            } else if (valor < (-60)){
+                document.getElementById("imgPotencia").src = "https://raw.githubusercontent.com/MicaelaGordillo/images_IoT/main/intensidad_wifi/wifi1.png";
+            }
+        }
+        /*Función para pedir el valor de la conexión WiFi - cada 10 segundos*/
+        setInterval(function ( ) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("valorPotencia").innerText = this.responseText;
+                    document.getElementById("valorRSSI").innerText = this.responseText;
+                    actualizarPotencia();
+                }
+            };
+            xhttp.open("GET", "/RSSI", true);
+            xhttp.send();
+        }, 10000);
     </script>
 </body>
 </html>
